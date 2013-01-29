@@ -22,5 +22,7 @@ namespace TyphoonAdapter.DCC
 
         // service mode instructions mask:
         public const byte ServiceMode = 0x70;                   // 01110000
+
+        public const ushort BasicAccessoryBroadcastAddress = 0x1FF;   // 10[111111] 1[111]xxxx; =511 decimal
     }
 }

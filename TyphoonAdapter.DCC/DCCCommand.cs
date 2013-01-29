@@ -128,6 +128,7 @@ namespace TyphoonAdapter.DCC
 
             return new DCCCommand(list);
         }
+
         public static DCCCommand LocoBroadcastReset()
         {
             /*
@@ -160,6 +161,7 @@ namespace TyphoonAdapter.DCC
 
             return LocoBroadcast(DCCCommandPriority.High, DCCCommandType.Stop, new byte[] { instruction });
         }
+
         // speed < 0 => emergency-stop
         // speed = 0 => brake
         // speed = 1...14 => normal speed
@@ -313,6 +315,7 @@ namespace TyphoonAdapter.DCC
 
             return new DCCCommand(list) { Type = DCCCommandType.Speed };
         }
+
         public static DCCCommand LocoFunctionGroup1(LocomotiveAddress address, bool F0, bool F1, bool F2, bool F3, bool F4)
         {
             // 100CFFFF
@@ -410,6 +413,7 @@ namespace TyphoonAdapter.DCC
 
             return new DCCCommand(list) { Type = DCCCommandType.Function };
         }
+
         public static DCCCommand LocoConsist(LocomotiveAddress address, byte consistAddress, bool forward)
         {
             // 0001CCCC 0AAAAAAA
@@ -452,6 +456,7 @@ namespace TyphoonAdapter.DCC
 
             return new DCCCommand(list);
         }
+
         // it's equal to LocoPOMCVWrite only for CV#23/CV#24
         public static DCCCommand LocoPOMAccelerationDeceleration(LocomotiveAddress address, bool acceleration, byte value)
         {
@@ -560,6 +565,7 @@ namespace TyphoonAdapter.DCC
 
             return new DCCCommand(list) { Type = DCCCommandType.POM };
         }
+
         public static DCCCommand LocoServiceReset()
         {
             DCCCommand cmd = DCCCommand.LocoBroadcastReset();
@@ -625,13 +631,68 @@ namespace TyphoonAdapter.DCC
             return new DCCCommand(list) { Type = DCCCommandType.Service };
         }
 
+        // decoderAddress: [1...510]; 511 is acc broadcast address; 511 total addresses, 510 for decoders
+        // decoderOutput: [0...3]
+        // coilNumber: 0 => straight, 1 => diverging
+        // on: on, off, [0/1]; note: intellibox only sends on, never off
+        public static DCCCommand BasicAccessory(AccessoryAddress address, byte coilNumber, bool on)
+        {
+            // 10AAAAAA 1AAACDDP
+            //           AAA => bit 7...9 of address, but is transmitted inverted (in complement form (0=>1, 1=>0))!
+            //              C => =0 - off, =1 - on
+            //               DD => output number, 00..11
+            //                 P => coil number, 0...1
 
+            /*
+            Duration of time each output is active being controlled by CVs #515...518. Since most devices are paired,
+            the convention is that bit "0" of the second byte is used to distinguish between which of a pair of outputs
+            the accessory decoder is activating or deactivating.
+            Bits 1 and 2 of byte two are used to indicate which of 4 pairs of outputs the packet is controlling. The
+            most significant bits of the 9-bit address are bits 4-6 of the second data byte. By convention these bits (bits 4-6 of
+            the second data byte) are in ones complement.
+            */
 
+            byte addressLSBMasked = (byte)(0x80 | (address.DecoderAddress & 0x3F)); // 0...5 LSB bits; = CV1
+            byte addressMSBMasked = (byte)(0x80 | (((address.DecoderAddress / 0x40) ^ 0x07) * 0x10)); // 6...8 MSB bits; inverted; = CV9
+            byte outputNumberMasked = (byte)((address.DecoderOutput << 1) & 0x06);
+            byte coilNumberMasked = (byte)(coilNumber & 0x01);
+            byte onoffMasked = (byte)(((on ? (byte)1 : (byte)0) & 0x01) * 0x08); // 0000[on]000
 
+            List<byte> list = new List<byte>();
+            list.Add(addressLSBMasked);
+            list.Add((byte)(addressMSBMasked | outputNumberMasked | coilNumberMasked | onoffMasked));
 
+            return new DCCCommand(list) { Type = DCCCommandType.Accessory };
+        }
+        public static DCCCommand BasicAccessoryBroadcast(byte decoderOutput, byte coilNumber, bool on)
+        {
+            // 10111111 1000CDDP - broadcast for basic accessory decoders (3 MSB bits are inverted!!!, so 111);
+            return BasicAccessory(new AccessoryAddress(DCC.BasicAccessoryBroadcastAddress, decoderOutput), coilNumber, on);
+        }
 
+        // decoderAddress: [0...510]; 511 is acc broadcast address
+        // aspect: aspect number, [0...31]
+        public static DCCCommand ExtendedAccessory(ushort decoderAddress, byte aspect)
+        {
+            // 10AAAAAA 0AAA0AA1 000XXXXX
+            //                      XXXXX = 0 => absolute stop aspect
+            //           AAA => bit 7...9 of address, but is transmitted inverted!
 
+            byte addressLSBMasked = (byte)(0x80 | (decoderAddress & 0x3F)); // address 0...6 lsb bits
+            byte addressMSBMasked = (byte)(0x80 | (((decoderAddress / 0x40) ^ 0x07) * 0x10)); // address 7...9 msb bits; shift down, invert, shift up
+            byte aspectMasked = (byte)(aspect & 0x1F);
 
+            List<byte> list = new List<byte>();
+            list.Add(addressLSBMasked);
+            list.Add((byte)(addressMSBMasked | aspectMasked));
+
+            return new DCCCommand(list) { Type = DCCCommandType.Accessory };
+        }
+        //public static DCCCommand ExtendedAccessoryBroadcast(byte aspect)
+        //{
+        //    // 10111111 0 00000111 0 000XXXXX
+        //    return ExtendedAccessory(, aspect);
+        //}
         #endregion
     }
 }
