@@ -1,0 +1,19 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Atmel Studio Solution File, Format Version 11.00
+Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "Typhoon.Adapter", "Typhoon.Adapter\Typhoon.Adapter.cproj", "{C99A946B-C8EA-4D9F-902B-B9A651AB18E8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|AVR = Debug|AVR
+		Release|AVR = Release|AVR
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C99A946B-C8EA-4D9F-902B-B9A651AB18E8}.Debug|AVR.ActiveCfg = Debug|AVR
+		{C99A946B-C8EA-4D9F-902B-B9A651AB18E8}.Debug|AVR.Build.0 = Debug|AVR
+		{C99A946B-C8EA-4D9F-902B-B9A651AB18E8}.Release|AVR.ActiveCfg = Release|AVR
+		{C99A946B-C8EA-4D9F-902B-B9A651AB18E8}.Release|AVR.Build.0 = Release|AVR
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

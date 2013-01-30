@@ -98,6 +98,10 @@
       <Project>{dfbdca7e-128f-4971-b6c9-471360657327}</Project>
       <Name>TyphoonAdapter.DCC</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TyphoonAdapter.USBPipeline\TyphoonAdapter.USBPipeline.csproj">
+      <Project>{8e8478c8-fe71-462e-b38a-3e4a75d7fc86}</Project>
+      <Name>TyphoonAdapter.USBPipeline</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
