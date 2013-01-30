@@ -20,15 +20,19 @@
       <ToolType>com.atmel.avrdbg.tool.avrdragon</ToolType>
       <ToolName>AVR Dragon</ToolName>
       <ToolNumber>00A200013050</ToolNumber>
+      <KeepTimersRunning>true</KeepTimersRunning>
+      <OverrideVtor>false</OverrideVtor>
+      <OverrideVtorValue>
+      </OverrideVtorValue>
       <Channel>
         <host>127.0.0.1</host>
-        <port>1312</port>
+        <port>2000</port>
         <ssl>False</ssl>
       </Channel>
       <ToolOptions>
         <InterfaceName>JTAG</InterfaceName>
         <InterfaceProperties>
-          <JtagDbgClock>0</JtagDbgClock>
+          <JtagDbgClock>250000</JtagDbgClock>
           <JtagProgClock>1000000</JtagProgClock>
           <IspClock>150000</IspClock>
           <JtagInChain>false</JtagInChain>
@@ -44,6 +48,7 @@
     <ToolchainFlavour>Native</ToolchainFlavour>
     <AsfVersion>3.5.0</AsfVersion>
     <KeepTimersRunning>true</KeepTimersRunning>
+    <preserveEEPROM>False</preserveEEPROM>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <OutputFileName>Typhoon.Adapter</OutputFileName>
@@ -66,6 +71,7 @@
         </avrgcc.linker.libraries.Libraries>
       </AvrGcc>
     </ToolchainSettings>
+    <OutputType>Executable</OutputType>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <OutputFileName>Typhoon.Adapter</OutputFileName>

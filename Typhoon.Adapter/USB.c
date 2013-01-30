@@ -22,7 +22,7 @@ static Packet packet;
 static Message_t msg;
 static uchar readIdx;
 static uchar bytesRemaining;
-PROGMEM char usbHidReportDescriptor[USB_CFG_HID_REPORT_DESCRIPTOR_LENGTH] = 
+PROGMEM const char usbHidReportDescriptor[USB_CFG_HID_REPORT_DESCRIPTOR_LENGTH] = 
 {
     0x05, 0x01,			                    // USAGE_PAGE (Generic Desktop)
 	0x09, 0x03,                             // USAGE (Vendor Usage 1)

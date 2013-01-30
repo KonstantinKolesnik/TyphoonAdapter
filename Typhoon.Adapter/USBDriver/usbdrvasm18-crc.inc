@@ -5,7 +5,6 @@
  * Tabsize: 4
  * Copyright: (c) 2008 by Lukas Schrittwieser and OBJECTIVE DEVELOPMENT Software GmbH
  * License: GNU GPL v2 (see License.txt), GNU GPL v3 or proprietary (CommercialLicense.txt)
- * Revision: $Id: usbdrvasm18-crc.inc 740 2009-04-13 18:23:31Z cs $
  */
 
 /* Do not link this file! Link usbdrvasm.S instead, which includes the
@@ -313,7 +312,7 @@ stuffErr:
 
 unstuff0:						;[8] this is the branch delay of breq unstuffX
 	andi	x1, USBMASK			;[9] do an se0 check here (if the last crc byte ends with 5 one's we might end up here
-	breq	didunstuff0			;[10] event tough the Message_t is complete -> jump back and store the byte
+	breq	didunstuff0			;[10] event tough the message is complete -> jump back and store the byte
 	ori		shift, 0x01			;[11] invert the last received bit to prevent furhter unstuffing
 	in		x2, USBIN			;[0] we have some free cycles so we could check for bit stuffing errors
 	andi	x5, 0xFE			;[1] mark this bit as inverted (will be corrected before storing shift)
