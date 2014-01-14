@@ -93,14 +93,15 @@ namespace TyphoonAdapter.USBPipeline
             byte[] data = device.ReadInputReport();
             if (data != null && data[0] == 'S')
             {
-                AdapterStatus status = new AdapterStatus();
-                status.MainTrackActive = data[1] != 0;
-                status.ProgramTrackActive = data[2] != 0;
-                status.MainTrackShortCircuitBlocked = data[3] != 0;
-                status.ProgramTrackShortCircuitBlocked = data[4] != 0;
-                status.RailcomActive = data[5] != 0;
-                status.AckOn = data[6] != 0;
-                return status;
+                return new AdapterStatus()
+                {
+                    MainTrackActive = data[1] != 0,
+                    ProgramTrackActive = data[2] != 0,
+                    MainTrackShortCircuitBlocked = data[3] != 0,
+                    ProgramTrackShortCircuitBlocked = data[4] != 0,
+                    RailcomActive = data[5] != 0,
+                    AckOn = data[6] != 0
+                };
             }
             return null;
         }
