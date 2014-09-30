@@ -1,10 +1,10 @@
-#include "Hardware.h"
 #include <avr/io.h>
 #include <avr/wdt.h>
 #include <avr/interrupt.h>
 #include <avr/pgmspace.h>
 #include <util/delay.h>
 #include <string.h>
+#include "Hardware.h"
 #include "USBDriver/usbdrv.h"
 #include "DCCMessage.h"
 #include "OperationQueue.h"

@@ -1,8 +1,8 @@
-#include "Hardware.h"
 #include <avr/io.h>
 #include <avr/iom162.h>
 #include <util/delay.h>
 #include <avr/interrupt.h>
+#include "Hardware.h"
 #include "USB.h"
 #include "ShortCircuitDetector.h"
 #include "OperationDCCOut.h"
